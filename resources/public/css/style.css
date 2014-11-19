@@ -1,0 +1,113 @@
+.container {
+    width :100%;
+    max-width: 800px;
+    position: relative;
+}
+
+body  {
+
+}
+
+#chat_box {
+    float:left;
+    width:100%;
+    color:red;
+}
+
+.question {
+    padding: 1%;
+    display: table;
+    width: 100%;
+    /*   min-height: 3em;*/
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 0.5em;
+    border-color: lightgrey;
+}
+
+.question > * {
+    float: left;
+    font-size: 1em;
+    display: table-cell;
+    vertical-align: middle;
+    /*    padding: 0;*/
+}
+.question p{
+    padding-top: 5%;
+    /*    font-size: 1em;*/
+    max-width: 100%;
+}
+
+.question .button-wrapper{
+    float:right;
+    text-align: center;
+    padding: 0 5px 0 0;
+    /*    padding-right: 5px;*/
+
+
+}
+button:first-child{
+    margin-bottom: 1em;
+}
+button {
+    display: block;
+    text-align: center;
+    width: 100%;
+    padding: 0;
+}
+.question .btn {
+    padding: 6px 0;
+}
+.btn-primary {
+    background-color: #3FC380;
+    border-color: #37A86F;
+}
+.question h2{
+    color:#446CB3;
+    font-size: 1.1em;
+    padding-left: 5px;
+}
+.btn-default{
+    margin-top: 20px;
+}
+
+.btn.remove {
+    margin-top: 15px;
+}
+
+
+.glass::before {
+    /*    background-image: url('pelican.jpg');*/
+    -webkit-filter: blur(5px); -moz-filter: blur(5px); -o-filter: blur(5px); -ms-filter: blur(5px); filter: blur(5px);
+}
+
+.jumbotron {
+    margin-top: 70px;
+    background-color: #C5EFF7;
+    overflow: hidden;
+}
+.navbar-default {
+    background-color: #81CFE0;
+    font-family: sans-serif;
+}
+.navbar h1 {
+    font-size: 28px;
+}
+form {
+    font-size: 1.5em;
+}
+.form-group input {
+    width:100%;
+}
+.make-room {
+    padding: 20px;
+    font-size: inherit;
+    display: block;
+    margin: 0 auto;
+    /*    float: right;*/
+}
+
+h2.score {
+		font-size: 32px;
+		text-align: center;
+}
