@@ -20,11 +20,12 @@
                  [leiningen "2.5.0"]
                  [http-kit "2.1.19"]
                  [secretary "1.2.1"]
-                 [cljs-ajax "0.3.3"]
+                 [cljs-http "0.1.20"]
                  [org.clojure/tools.nrepl "0.2.6"]]
 
   :plugins [[lein-cljsbuild "1.0.3"]
             [lein-environ "1.0.0"]
+            [refactor-nrepl "0.1.0"]
             [cider/cider-nrepl "0.8.1"]]
 
   :min-lein-version "2.5.0"

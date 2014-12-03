@@ -1,14 +1,13 @@
 (ns chessnut.core
   (:require [reagent.core :as reagent :refer [atom]]
             [secretary.core :as secretary :refer-macros [defroute]]
-            [goog.events :as events]))
+            [goog.events :as events]
+            [cljs-http.client :as client]))
 
 (defn log [str]
   (js/console.log str))
 
 (def debug? (atom true))
-
-
 (def owner? (atom true))
 
 (def room (atom {:owner "owner-id"
@@ -42,7 +41,6 @@
                  (assoc :empty full)
                  (assoc :questions empty))))))
 
-
 (defn nav-bar []
   [:nav.navbar.navbar-default {:role "navigation"}
    [:div.container [:h1 "Quand"]]])
@@ -60,11 +58,8 @@
       [:p "Debug:"]
       [:pre (doall (str "owner?:" @owner?))]
       [:pre (doall (str "debug?:" @debug?))]
-      [:pre (doall (str @room))]])])
+      [:pre  (str @room)]])])
 
-
-(defn show [component]
-  (reagent/render-component (fn [] [component]) (.-body js/document)))
 
 
 (defn no-questions-owner []
@@ -98,34 +93,58 @@
          [:button.down.btn.btn-danger.glyphicon.glyphicon-arrow-down]])]]))
 
 (defn display-questions []
-  (let [questions (-> @room :questions vals)]
-    (if (zero? (count questions))
-      (if @owner?
-        (no-questions-owner)
-        (no-questions-audience))
-      [:div (doall (map question-panel questions))])))
+  (let [questions (-> @room :questions vals)
+        rooms (client/get "http://catsandmilk.com/json")]
+    (pr-str rooms)
+    #_(if (zero? (count questions))
+        (if @owner?
+          (no-questions-owner)
+          (no-questions-audience))
+        [:div (doall (map question-panel questions))]
+        (when (not @owner?)
+          [:input {:type "text"}]))))
 
+(defn name-room [title]
+  [:p (if (= "" title)
+        "Please enter a room name."
+        (str "Let's get started with your room: " title))])
 
 (defn landing-page []
-  [:div.jumbotron
-   [:h2 "Welcome to Quand."]
-   [:p "Quand is an easy way to ask and organize questions for your event"]
-   [:form
-    {:method "GET", :action "/create"}
-    [:div.form-group
-     [:label "Name your room:"]
-     [:input {:type "text", :placeholder "pick a name", :name "title"}]]
-    [:input.make-room.btn.btn-default {:value "Create Room"
-                                       :type "submit"
-                                       :on-click #(show display-questions)}]]])
+  (let [title (atom "")]
+    (fn []
+      [:div.jumbotron
+       [:h2 "Welcome to Quand."]
+       [:p "Quand is an easy way to ask and organize questions for your event"]
+       [:form
+        [:div.form-group
+         [name-room @title]
+         [:input {:type "text"
+                  :name "title"
+                  :value @title
+                  :on-change #(reset! title (-> % .-target .-value))
+                  :placeholder "pick a name"}]]
+        [:input.make-room.btn.btn-default
+         {:default-value "Create Room"
+          :on-click #((post-create-room title)
+                      (show display-questions))}]]])))
 
+(defroute "/r/:room" [room]
+  (js/alert room))
+
+(defn show [component]
+  (reagent/render-component (fn [] [frame [component]]) (.-body js/document)))
 
 
 (defn main []
-  (reagent/render-component (fn [] [frame [landing-page]])
-                            (.-body js/document)))
+  (show landing-page))
 
 (comment
+
+  (show landing-page)
+
   (toggle-owner)
   (toggle-room)
-  (toggle-debug))
+  (toggle-debug)
+
+  (client/get "/test/apples")
+  )
